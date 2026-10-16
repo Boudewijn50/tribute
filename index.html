@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Boudewijn Rooseboom</title>
+  <meta name="description" content="Half a Century of Rhythm. A Lifetime of Groove. A tribute to Amsterdam drummer Boudewijn Rooseboom.">
+  <meta name="theme-color" content="#0c0b0a">
+
+  <!-- Social preview (WhatsApp, Facebook, etc.) -->
+  <meta property="og:title" content="Boudewijn Rooseboom">
+  <meta property="og:description" content="Half a Century of Rhythm. A Lifetime of Groove.">
+  <meta property="og:type" content="website">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Mrs+Saint+Delafield&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ============ ENTER SCREEN (browsers only allow sound after a click) ============ -->
+  <div id="gate" class="gate" role="dialog" aria-label="Enter">
+    <div class="gate__inner">
+      <p class="gate__name">Boudewijn Rooseboom</p>
+      <button id="enterBtn" class="gate__btn" type="button">
+        <span class="gate__play" aria-hidden="true"></span> enter
+      </button>
+      <p class="gate__hint">sound on</p>
+    </div>
+  </div>
+
+  <!-- ============ HERO: photo roulette ============ -->
+  <header class="hero">
+    <div class="film" id="film">
+      <div class="frame" aria-hidden="true"></div>
+      <div class="frame" aria-hidden="true"></div>
+    </div>
+    <div class="grain" aria-hidden="true"></div>
+    <div class="vignette" aria-hidden="true"></div>
+
+    <div class="hero__text">
+      <h1 class="name">Boudewijn Rooseboom</h1>
+      <p class="tagline">Half a Century of Rhythm. <em>A Lifetime of Groove.</em></p>
+    </div>
+
+    <a class="scroll-cue" href="#tribute" aria-label="Read more">
+      <span></span>
+    </a>
+  </header>
+
+  <!-- ============ TEXT ============ -->
+  <main id="tribute" class="tribute">
+    <p class="label">A Tribute to Boudewijn Rooseboom</p>
+
+    <div class="tribute__body">
+      <p class="lede">
+        For half a century, Boudewijn Rooseboom has been more than a drummer. He has been the pulse beneath Amsterdam’s streets. From intimate corners to roaring stages, his rhythm has carried the city’s energy: raw, warm, defiant and unmistakably alive.
+      </p>
+
+      <p>
+        This page is a celebration of an Amsterdam icon whose beats have become part of the city’s heartbeat. A place where friends, fans and fellow musicians can return, again and again, to the sound of a man who turned every drum into a story, every performance into a memory, and every rhythm into something that refuses to fade.
+      </p>
+
+      <p class="coda">
+        Here the music plays on — today, tomorrow and forever —
+        <span>an everlasting memory of the man who kept Amsterdam in time.</span>
+      </p>
+    </div>
+
+    <footer class="foot">
+      <span>Boudewijn Rooseboom</span>
+      <span class="dot">·</span>
+      <span>Amsterdam</span>
+    </footer>
+  </main>
+
+  <!-- ============ PLAYER ============ -->
+  <aside class="player" id="player" aria-label="Music player">
+    <div class="player__track">
+      <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="player__title" id="trackTitle">—</span>
+    </div>
+
+    <div class="player__progress" id="progress" aria-hidden="true"><span id="progressBar"></span></div>
+
+    <div class="player__controls">
+      <button id="shuffleBtn" class="btn btn--toggle" type="button" title="Shuffle" aria-label="Shuffle" aria-pressed="false">
+        <svg viewBox="0 0 24 24"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
+      </button>
+      <button id="prevBtn" class="btn" type="button" title="Previous" aria-label="Previous">
+        <svg viewBox="0 0 24 24"><path d="M6 5v14M19 5 9 12l10 7z"/></svg>
+      </button>
+      <button id="playBtn" class="btn btn--play" type="button" title="Play" aria-label="Play">
+        <svg class="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15L19.5 12z"/></svg>
+        <svg class="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></svg>
+      </button>
+      <button id="nextBtn" class="btn" type="button" title="Next" aria-label="Next">
+        <svg viewBox="0 0 24 24"><path d="M18 5v14M5 5l10 7-10 7z"/></svg>
+      </button>
+
+      <label class="vol" title="Volume">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9zM16.5 8.5a5 5 0 0 1 0 7"/></svg>
+        <input id="volume" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volume">
+      </label>
+    </div>
+
+    <label class="tempo" title="Photo speed">
+      <span>slow</span>
+      <input id="tempo" type="range" min="0" max="1" step="0.01" value="0.5" aria-label="Photo speed">
+      <span>fast</span>
+    </label>
+  </aside>
+
+  <audio id="audio" preload="auto"></audio>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
