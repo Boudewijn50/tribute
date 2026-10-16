@@ -134,13 +134,14 @@ body.locked { overflow: hidden; }
     linear-gradient(to bottom, rgba(8,7,6,.38) 0%, transparent 16%, transparent 58%, rgba(12,11,10,.18) 70%, rgba(12,11,10,.45) 84%, rgba(12,11,10,.82) 100%);
 }
 
-/* oscilloscope line */
+/* oscilloscope line, on the seam between photo and page */
+.scope-rail { position: relative; height: 0; z-index: 6; pointer-events: none; }
 .scope {
-  position: absolute; z-index: 4; left: 0; right: 0;
-  bottom: 20%; width: 100%; height: 180px;
+  position: absolute; left: 0; top: -110px;
+  width: 100%; height: 220px;
   pointer-events: none;
   mix-blend-mode: screen;
-  opacity: .55;
+  opacity: .7;
 }
 
 /* film edge marks */
@@ -414,7 +415,7 @@ input[type="range"]:hover::-webkit-slider-thumb { background: var(--brass); }
 @media (max-width: 760px) {
   .name { font-size: 30vw; }
   .hero__text { padding-bottom: 210px; }
-  .scope { bottom: 38%; height: 100px; }
+  .scope { top: -70px; height: 140px; }
   .edge__rule { width: 28px; }
   .tribute { grid-template-columns: 1fr; gap: 30px; padding-bottom: 260px; }
   .fifty { font-size: 62vw; top: 30px; }

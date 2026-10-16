@@ -123,7 +123,7 @@
   function load(src) {
     return new Promise((ok) => {
       const img = new Image();
-      img.onload = () => (img.decode ? img.decode().catch(() => {}) : Promise.resolve()).then(() => ok(true));
+      img.onload = () => (img.decode ? img.decode().catch(() => {}) : Promise.resolve()).then(() => ok(img));
       img.onerror = () => ok(false);
       img.src = src;
     });
@@ -133,7 +133,8 @@
     clearTimeout(timer);
     if (!photos.length) return;
     const i = pickNext();
-    if (!(await load(photos[i]))) {
+    const img = await load(photos[i]);
+    if (!img) {
       photos.splice(i, 1);
       if (showing > i) showing--;
       return advance(first);
@@ -146,6 +147,8 @@
     const fadeMs = first ? 2400 : jump ? 700 : 2000;
 
     next.style.backgroundImage = `url("${photos[i]}")`;
+    next.dataset.ratio = img.naturalWidth / img.naturalHeight;
+    place(next);
     next.style.setProperty("--dx", (Math.random() * 3 - 1.5).toFixed(2) + "%");
     next.style.setProperty("--dy", (Math.random() * 2 - 1).toFixed(2) + "%");
     next.style.setProperty("--drift", (s + fadeMs / 1000 + 2) + "s");
@@ -161,6 +164,27 @@
     frameNo.textContent = "N° " + String(++shown).padStart(3, "0");
     schedule();
   }
+
+  /* Smart framing: the photo fills the screen, but we choose how much is
+     trimmed from the top vs. the bottom. Most of the overflow goes off the
+     bottom, but the top is never cut by more than TOP_MAX of the photo height —
+     so faces low in the picture still stay in view on wide screens. */
+  const TOP_SHARE = 0.5;   // share of the overflow taken from the top
+  const TOP_MAX = 0.15;    // never trim more than 15% of the photo from the top
+  function place(frame) {
+    const ratio = parseFloat(frame.dataset.ratio);
+    if (!ratio) return;
+    const w = frame.offsetWidth, h = frame.offsetHeight;
+    const rh = Math.max(h, w / ratio);          // rendered photo height ("cover")
+    const overflow = rh - h;
+    const top = Math.min(overflow * TOP_SHARE, rh * TOP_MAX);
+    frame.style.backgroundPosition = `center ${-Math.round(top)}px`;
+  }
+  let resizeT;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeT);
+    resizeT = setTimeout(() => frames.forEach(place), 120);
+  });
 
   function schedule() {
     clearTimeout(timer);
@@ -433,9 +457,9 @@
     };
 
     // a warm, wider-swinging echo line in colour, then the main line on top
-    line(sample(1.25, 0.11), "rgba(206,120,64,.5)", 2 * DPR, 10 * DPR);
-    line(sample(0.85, 0.0), "rgba(194,154,91,.35)", 4 * DPR, 0);
-    line(sample(0.85, 0.0), "rgba(240,234,222,.9)", 2.2 * DPR, 6 * DPR);
+    line(sample(1.2, 0.11), "rgba(206,120,64,.6)", 3 * DPR, 12 * DPR);
+    line(sample(0.8, 0.0), "rgba(194,154,91,.35)", 7 * DPR, 0);
+    line(sample(0.8, 0.0), "rgba(240,234,222,.95)", 3.6 * DPR, 8 * DPR);
   }
 
   const reduceMotion = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
