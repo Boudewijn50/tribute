@@ -158,7 +158,7 @@
 
     activeFrame = 1 - activeFrame;
     showing = i;
-    frameNo.textContent = "N° " + pad(++shown);
+    frameNo.textContent = "N° " + String(++shown).padStart(3, "0");
     schedule();
   }
 
@@ -397,34 +397,45 @@
     const live = analyser && !audio.paused;
     if (live) analyser.getByteTimeDomainData(wave);
 
-    const pts = 160;
-    const ys = new Float32Array(pts);
-    for (let i = 0; i < pts; i++) {
-      const edge = Math.sin(Math.PI * i / (pts - 1));        // taper at both ends
-      let v;
-      if (live) {
-        const k = Math.floor(i / pts * wave.length);
-        v = (wave[k] - 128) / 128;
-      } else {
-        v = 0.025 * Math.sin(i * 0.12 + t / 700);
+    const pts = 180;
+    // sample the waveform: scale = amplitude, shift = phase offset (fraction of buffer)
+    const sample = (scale, shift) => {
+      const ys = new Float32Array(pts);
+      for (let i = 0; i < pts; i++) {
+        const edge = Math.sin(Math.PI * i / (pts - 1));        // taper at both ends
+        let v;
+        if (live) {
+          const k = Math.floor(((i / pts) * 0.8 + shift) * wave.length) % wave.length;
+          v = (wave[k] - 128) / 128;
+        } else {
+          v = 0.025 * Math.sin(i * 0.12 + t / 700 + shift * 40);
+        }
+        ys[i] = mid + v * mid * scale * edge;
       }
-      ys[i] = mid + v * mid * 0.95 * edge;
-    }
+      return ys;
+    };
 
-    const line = (color, width, dy) => {
+    const line = (ys, color, width, glow) => {
       scopeCtx.beginPath();
-      scopeCtx.moveTo(0, ys[0] + dy);
+      scopeCtx.moveTo(0, ys[0]);
       for (let i = 1; i < pts - 1; i++) {
         const x = i / (pts - 1) * w, nx = (i + 1) / (pts - 1) * w;
-        scopeCtx.quadraticCurveTo(x, ys[i] + dy, (x + nx) / 2, (ys[i] + ys[i + 1]) / 2 + dy);
+        scopeCtx.quadraticCurveTo(x, ys[i], (x + nx) / 2, (ys[i] + ys[i + 1]) / 2);
       }
-      scopeCtx.lineTo(w, ys[pts - 1] + dy);
+      scopeCtx.lineTo(w, ys[pts - 1]);
       scopeCtx.strokeStyle = color;
       scopeCtx.lineWidth = width;
+      scopeCtx.lineJoin = scopeCtx.lineCap = "round";
+      scopeCtx.shadowColor = color;
+      scopeCtx.shadowBlur = glow;
       scopeCtx.stroke();
+      scopeCtx.shadowBlur = 0;
     };
-    line("rgba(194,154,91,.45)", 3 * DPR, 3 * DPR);
-    line("rgba(235,229,217,.85)", 1.1 * DPR, 0);
+
+    // a warm, wider-swinging echo line in colour, then the main line on top
+    line(sample(1.25, 0.11), "rgba(206,120,64,.5)", 2 * DPR, 10 * DPR);
+    line(sample(0.85, 0.0), "rgba(194,154,91,.35)", 4 * DPR, 0);
+    line(sample(0.85, 0.0), "rgba(240,234,222,.9)", 2.2 * DPR, 6 * DPR);
   }
 
   const reduceMotion = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -451,7 +462,7 @@
     if (tracks.length) setTrack(pos, true);
   });
 
-  const revealEls = document.querySelectorAll(".label, .tribute__body p, .foot");
+  const revealEls = document.querySelectorAll(".label, .tribute__body p, .chapter, .pull, .foot");
   revealEls.forEach((el) => el.classList.add("reveal"));
   if ("IntersectionObserver" in window) {
     const io = new IntersectionObserver((entries) => entries.forEach((en) => {

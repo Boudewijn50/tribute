@@ -12,8 +12,8 @@ window.SITE_CONFIG = {
   photoSeconds: 8,
 
   // How much of the original colour comes through:
-  // 0 = fully black & white, 1 = original colours. 0.5 = muted vintage colour.
-  photoColour: 0.5,
+  // 0 = fully black & white, 1 = original colours. 0.3 = a hint of vintage colour.
+  photoColour: 0.3,
 
   // Music
   shuffleOnStart: true,
