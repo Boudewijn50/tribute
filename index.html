@@ -3,18 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Boudewijn Rooseboom</title>
-  <meta name="description" content="Half a Century of Rhythm. A Lifetime of Groove. A tribute to Amsterdam drummer Boudewijn Rooseboom.">
+  <title>Boudewijn — Half a Century of Rhythm</title>
+  <meta name="description" content="Half a Century of Rhythm. A Lifetime of Groove. An homage to Amsterdam drummer Boudewijn Rooseboom.">
   <meta name="theme-color" content="#0c0b0a">
 
-  <!-- Social preview (WhatsApp, Facebook, etc.) -->
-  <meta property="og:title" content="Boudewijn Rooseboom">
+  <meta property="og:title" content="Boudewijn">
   <meta property="og:description" content="Half a Century of Rhythm. A Lifetime of Groove.">
   <meta property="og:type" content="website">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Mrs+Saint+Delafield&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Mrs+Saint+Delafield&family=Pinyon+Script&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -22,7 +21,7 @@
   <!-- ============ ENTER SCREEN (browsers only allow sound after a click) ============ -->
   <div id="gate" class="gate" role="dialog" aria-label="Enter">
     <div class="gate__inner">
-      <p class="gate__name">Boudewijn Rooseboom</p>
+      <p class="gate__name">Boudewijn</p>
       <button id="enterBtn" class="gate__btn" type="button">
         <span class="gate__play" aria-hidden="true"></span> enter
       </button>
@@ -30,28 +29,60 @@
     </div>
   </div>
 
-  <!-- ============ HERO: photo roulette ============ -->
+  <!-- ============ HERO ============ -->
   <header class="hero">
     <div class="film" id="film">
       <div class="frame" aria-hidden="true"></div>
       <div class="frame" aria-hidden="true"></div>
     </div>
+    <div class="leak" aria-hidden="true"></div>
     <div class="grain" aria-hidden="true"></div>
     <div class="vignette" aria-hidden="true"></div>
 
-    <div class="hero__text">
-      <h1 class="name">Boudewijn Rooseboom</h1>
-      <p class="tagline">Half a Century of Rhythm. <em>A Lifetime of Groove.</em></p>
+    <!-- live waveform of the music -->
+    <canvas class="scope" id="scope" aria-hidden="true"></canvas>
+
+    <!-- film edge details -->
+    <div class="edge edge--top" aria-hidden="true">
+      <span id="frameNo">N° 01</span>
+      <span class="edge__rule"></span>
+      <span>Amsterdam</span>
     </div>
 
-    <a class="scroll-cue" href="#tribute" aria-label="Read more">
-      <span></span>
-    </a>
+    <!-- spinning record label: turns while the music plays -->
+    <div class="disc" aria-hidden="true">
+      <svg viewBox="0 0 200 200">
+        <defs><path id="ring" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs>
+        <circle cx="100" cy="100" r="96" class="disc__edge"/>
+        <circle cx="100" cy="100" r="58" class="disc__inner"/>
+        <text><textPath href="#ring" textLength="486">HALF A CENTURY OF RHYTHM · A LIFETIME OF GROOVE ·</textPath></text>
+        <text x="100" y="118" text-anchor="middle" class="disc__b">B</text>
+        <circle cx="100" cy="100" r="3" class="disc__hole"/>
+      </svg>
+    </div>
+
+    <div class="hero__text">
+      <h1 class="name">Boudewijn</h1>
+      <p class="tagline">Half a Century of Rhythm. A Lifetime of Groove.</p>
+    </div>
   </header>
+
+  <!-- ============ MARQUEE BAND ============ -->
+  <div class="band" aria-hidden="true">
+    <div class="band__track">
+      <span>Raw</span><i>✦</i><span class="o">Warm</span><i>✦</i><span>Defiant</span><i>✦</i><span class="o">Unmistakably alive</span><i>✦</i>
+      <span>Raw</span><i>✦</i><span class="o">Warm</span><i>✦</i><span>Defiant</span><i>✦</i><span class="o">Unmistakably alive</span><i>✦</i>
+    </div>
+  </div>
 
   <!-- ============ TEXT ============ -->
   <main id="tribute" class="tribute">
-    <p class="label">A Tribute to Boudewijn Rooseboom</p>
+    <div class="fifty" aria-hidden="true">50</div>
+
+    <h2 class="label">
+      <small>A Tribute to</small>
+      Boudewijn Rooseboom
+    </h2>
 
     <div class="tribute__body">
       <p class="lede">
@@ -63,13 +94,13 @@
       </p>
 
       <p class="coda">
-        Here the music plays on — today, tomorrow and forever —
-        <span>an everlasting memory of the man who kept Amsterdam in time.</span>
+        Here the music plays on — today, tomorrow and for years to come.
+        <span>An homage to the man who keeps Amsterdam in time.</span>
       </p>
     </div>
 
     <footer class="foot">
-      <span>Boudewijn Rooseboom</span>
+      <span>Boudewijn</span>
       <span class="dot">·</span>
       <span>Amsterdam</span>
     </footer>
@@ -77,9 +108,11 @@
 
   <!-- ============ PLAYER ============ -->
   <aside class="player" id="player" aria-label="Music player">
+    <canvas class="analyser" id="analyser" aria-hidden="true"></canvas>
+
     <div class="player__track">
-      <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>
       <span class="player__title" id="trackTitle">—</span>
+      <span class="player__time" id="trackTime">0:00</span>
     </div>
 
     <div class="player__progress" id="progress" aria-hidden="true"><span id="progressBar"></span></div>
@@ -104,12 +137,6 @@
         <input id="volume" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volume">
       </label>
     </div>
-
-    <label class="tempo" title="Photo speed">
-      <span>slow</span>
-      <input id="tempo" type="range" min="0" max="1" step="0.01" value="0.5" aria-label="Photo speed">
-      <span>fast</span>
-    </label>
   </aside>
 
   <audio id="audio" preload="auto"></audio>

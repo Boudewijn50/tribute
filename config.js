@@ -8,10 +8,12 @@ window.SITE_CONFIG = {
   photoFolder: "photos",
   musicFolder: "music",
 
-  // Photo roulette: seconds per photo
-  fastestSeconds: 3,   // slider fully on "fast"
-  slowestSeconds: 10,  // slider fully on "slow"
-  startSeconds: 6,     // where the slider starts
+  // Photo roulette: seconds each photo stays on screen
+  photoSeconds: 8,
+
+  // How much of the original colour comes through:
+  // 0 = fully black & white, 1 = original colours. 0.5 = muted vintage colour.
+  photoColour: 0.5,
 
   // Music
   shuffleOnStart: true,
