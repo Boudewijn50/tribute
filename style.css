@@ -156,6 +156,7 @@ body.locked { overflow: hidden; }
   display: flex; align-items: center; gap: 14px;
 }
 .edge--top { top: clamp(18px, 3.5vh, 34px); left: clamp(16px, 6vw, 96px); }
+.edge, .lang { text-shadow: 0 1px 2px rgba(0,0,0,.7), 0 0 12px rgba(0,0,0,.55); }
 .edge__rule { width: 60px; height: 1px; background: currentColor; opacity: .6; }
 #frameNo { color: var(--brass); min-width: 5.6em; }
 .edge__sep { opacity: .45; margin: 0 -.2em; }
@@ -183,6 +184,15 @@ body.locked { overflow: hidden; }
   padding: 0 clamp(16px, 6vw, 96px) clamp(48px, 8vh, 96px);
   pointer-events: none;
 }
+/* soft dark halo behind the name + tagline: keeps them readable on light, busy photos */
+.hero__text::before {
+  content: ""; position: absolute; z-index: -1;
+  left: -6%; bottom: -10%;
+  width: min(1150px, 112%); height: 125%;
+  background: radial-gradient(closest-side, rgba(8,7,6,.64), rgba(8,7,6,.38) 55%, transparent 100%);
+  filter: blur(18px);
+}
+.hero__text > * { position: relative; }
 .name {
   font-family: var(--f-script);
   font-weight: 400;
@@ -190,7 +200,8 @@ body.locked { overflow: hidden; }
   line-height: .9;
   margin: 0;
   color: var(--paper);
-  text-shadow: 0 2px 40px rgba(0,0,0,.5);
+  /* tight edge for the thin strokes + a wide soft glow */
+  text-shadow: 0 1px 2px rgba(0,0,0,.55), 0 0 14px rgba(0,0,0,.45), 0 4px 44px rgba(0,0,0,.55);
 }
 .name__oud { color: var(--brass); }
 .tagline {
@@ -200,7 +211,7 @@ body.locked { overflow: hidden; }
   line-height: 1.2;
   margin: clamp(1rem, 3.5vh, 2.4rem) 0 0 .3em;
   color: var(--brass);
-  text-shadow: 0 1px 2px rgba(0,0,0,.65), 0 0 26px rgba(0,0,0,.85);
+  text-shadow: 0 1px 1px rgba(0,0,0,.8), 0 0 10px rgba(0,0,0,.6), 0 0 30px rgba(0,0,0,.75);
 }
 
 /* ---------------- TRIBUTE TEXT ---------------- */
@@ -503,6 +514,7 @@ input[type="range"]:hover::-webkit-slider-thumb { background: var(--brass); }
 }
 @media (max-width: 760px) {
   .name { font-size: 20vw; }
+  .hero__text::before { left: -20%; width: 140%; height: 135%; bottom: -12%; }
   .tagline { font-size: 1.4rem; margin-top: .7rem; }
   .hero__text { padding-bottom: calc(168px + env(safe-area-inset-bottom, 0px)); }
   .scope { top: -70px; height: 140px; }
