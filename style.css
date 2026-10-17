@@ -188,6 +188,7 @@ body.locked { overflow: hidden; }
   color: var(--paper);
   text-shadow: 0 2px 40px rgba(0,0,0,.5);
 }
+.name__oud { color: var(--brass); }
 .tagline {
   font-family: var(--f-flourish);
   font-weight: 400;
