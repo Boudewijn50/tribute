@@ -54,6 +54,10 @@ body.locked { overflow: hidden; }
   line-height: 1; margin: 0 0 2rem;
   opacity: 0; animation: rise 2s .3s ease forwards;
 }
+/* "oud" slowly turns brass once the name has appeared: first Boudewijn, then… oud */
+.gate__oud { color: var(--paper); animation: ageing 5s ease-in-out 2.6s forwards; }
+@keyframes ageing { from { color: var(--paper); } to { color: var(--brass); } }
+@media (prefers-reduced-motion: reduce) { .gate__oud { animation: none; color: var(--brass); } }
 .gate__btn {
   font-family: var(--f-mono);
   font-size: .85rem; letter-spacing: .45em; text-transform: uppercase;
@@ -498,8 +502,9 @@ input[type="range"]:hover::-webkit-slider-thumb { background: var(--brass); }
   .foot { grid-row: 3; }
 }
 @media (max-width: 760px) {
-  .name { font-size: 24vw; }
-  .hero__text { padding-bottom: 210px; }
+  .name { font-size: 20vw; }
+  .tagline { font-size: 1.4rem; margin-top: .7rem; }
+  .hero__text { padding-bottom: calc(168px + env(safe-area-inset-bottom, 0px)); }
   .scope { top: -70px; height: 140px; }
   .edge { font-size: .6rem; letter-spacing: .2em; gap: 9px; }
   .edge__rule { display: none; }
