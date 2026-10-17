@@ -7,9 +7,34 @@
   <meta name="description" content="Half a Century of Rhythm. A Lifetime of Groove. An homage to Amsterdam drummer Boudewijn Rooseboom.">
   <meta name="theme-color" content="#0c0b0a">
 
+  <!-- pick the visitor's language before anything is drawn (no flicker) -->
+  <script>
+    (function () {
+      var l = null;
+      try { l = localStorage.getItem("br:lang"); } catch (e) {}
+      if (l !== "nl" && l !== "en") l = /^nl\b/i.test(navigator.language || "") ? "nl" : "en";
+      document.documentElement.lang = l;
+    })();
+  </script>
+
+  <!-- tab icon -->
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="alternate icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+  <!-- Share preview (WhatsApp, Facebook, LinkedIn, X …) -->
+  <meta property="og:url" content="https://boudewijn50.github.io/tribute/">
   <meta property="og:title" content="Boudewijn">
   <meta property="og:description" content="Half a Century of Rhythm. A Lifetime of Groove.">
   <meta property="og:type" content="website">
+  <meta property="og:image" content="https://boudewijn50.github.io/tribute/share.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Boudewijn. Half a Century of Rhythm. A Lifetime of Groove.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://boudewijn50.github.io/tribute/share.jpg">
+  <link rel="canonical" href="https://boudewijn50.github.io/tribute/">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,6 +42,10 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!--
+    TWO LANGUAGES: every text exists twice, once with data-lang="en" and once with data-lang="nl".
+    Change both when you edit a text. The NL | EN button switches between them.
+  -->
 
   <!-- ============ ENTER SCREEN (browsers only allow sound after a click) ============ -->
   <div id="gate" class="gate" role="dialog" aria-label="Enter">
@@ -25,7 +54,7 @@
       <button id="enterBtn" class="gate__btn" type="button">
         <span class="gate__play" aria-hidden="true"></span> enter
       </button>
-      <p class="gate__hint">sound on</p>
+      <p class="gate__hint"><span data-lang="en">sound on</span><span data-lang="nl">geluid aan</span></p>
     </div>
   </div>
 
@@ -39,7 +68,6 @@
     <div class="grain" aria-hidden="true"></div>
     <div class="vignette" aria-hidden="true"></div>
 
-
     <!-- film edge details -->
     <div class="edge edge--top" aria-hidden="true">
       <span id="frameNo">N° 001</span>
@@ -47,6 +75,13 @@
       <span>Est. 1976</span>
       <span class="edge__sep">|</span>
       <span>Amsterdam</span>
+    </div>
+
+    <!-- language switch -->
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-set-lang="nl">NL</button>
+      <span aria-hidden="true">|</span>
+      <button type="button" data-set-lang="en">EN</button>
     </div>
 
     <!-- spinning record label: turns while the music plays -->
@@ -63,55 +98,83 @@
 
     <div class="hero__text">
       <h1 class="name">Boudewijn</h1>
-      <p class="tagline">Half a Century of Rhythm. A Lifetime of Groove.</p>
+      <p class="tagline">
+        <span data-lang="en">Half a Century of Rhythm. A Lifetime of Groove.</span>
+        <span data-lang="nl">Een halve eeuw ritme. Een leven lang groove.</span>
+      </p>
     </div>
   </header>
 
   <!-- live waveform of the music, sitting on the edge where the photo ends -->
   <div class="scope-rail" aria-hidden="true"><canvas class="scope" id="scope"></canvas></div>
 
+  <!-- ============ PRESS QUOTES (filled from config.js — hidden while empty) ============ -->
+  <section class="press" id="press" aria-label="Press" hidden>
+    <figure class="press__stage" aria-live="polite">
+      <blockquote class="press__quote" id="pressQuote"></blockquote>
+      <figcaption class="press__source" id="pressSource"></figcaption>
+    </figure>
+    <div class="press__dots" id="pressDots" aria-hidden="true"></div>
+  </section>
 
   <!-- ============ TEXT ============ -->
   <main id="tribute" class="tribute">
     <div class="fifty" aria-hidden="true">50</div>
 
     <h2 class="label">
-      <small>A Tribute to</small>
+      <small><span data-lang="en">A Tribute to</span><span data-lang="nl">Een eerbetoon aan</span></small>
       Boudewijn Rooseboom
     </h2>
 
-    <div class="tribute__body">
+    <!-- ================= ENGLISH ================= -->
+    <div class="tribute__body" data-lang="en">
       <p class="lede">
         For half a century, Boudewijn Rooseboom has been more than a drummer. He has been the pulse beneath Amsterdam’s streets. From intimate corners to roaring stages, his rhythm has carried the city’s energy: raw, warm, defiant and unmistakably alive.
       </p>
 
-      <h3 class="chapter"><span>I</span>The Hands</h3>
+      <h3 class="chapter"><span>I</span>Enschede, 1976</h3>
       <p>
-        Watch him play and time begins to bend. The ride cymbal shimmers like streetlight on the Amstel. The snare speaks in whispers one moment and in thunderclaps the next. And the bass drum lands exactly where your heart expected it — or, deliciously, a hair’s breadth later. With brushes he turns a ballad into a slow dance across velvet; with sticks he turns a quiet room into a riot of joy.
+        He was born in 1976 in the roughest corner of Enschede, in streets the tourist brochures never mention. Junkies in the stairwells, drifters by the railway, sirens for a lullaby. Most kids there learned to keep their heads down. Boudewijn learned to keep time.
       </p>
       <p>
-        It is a style that stands like a house. Foundations of iron-clad time, walls of deep and unhurried swing, and every window thrown wide open to whatever the moment might bring. Nothing is wasted, nothing is for show. Every ghost note has a reason, every fill speaks a full sentence, and every silence is a breath the whole band takes together. It is mesmerising, and it is generous: he never plays to be heard — he plays so that everyone around him sounds better.
+        He drummed on anything that made a sound. Bins, railings, the bonnet of a burnt-out Opel, his school desk until the teacher took his pencils away. He got knocked down more than once and got back up every time, a little louder. Nobody handed him anything. He fought his way out, one beat at a time.
+      </p>
+
+      <h3 class="chapter"><span>II</span>Freddy Golden</h3>
+      <p>
+        Then came the afternoon that changed everything. Freddy Golden, the world-famous drummer, walked past a skinny kid hammering an impossible groove out of an upturned crate. Golden stopped. He listened. He asked who had taught him that. Nobody, said the kid. Golden decided on the spot that this was about to change.
+      </p>
+      <p>
+        He plucked young Boudewijn off the street and took him under his wing. A first real pair of sticks, a key to the rehearsal room, and one rule that still holds: play for the song, never for the applause. Through those early years Golden was always there, in the van, in the studio, at the side of the stage, until one night the pupil played something that made the master laugh out loud.
+      </p>
+
+      <h3 class="chapter"><span>III</span>The Conservatory</h3>
+      <p>
+        With Golden’s blessing he went to Amsterdam to study at the Conservatory: the street kid from Enschede among the scholars. He graduated cum laude, with a thesis that is still whispered about in percussion circles: a meticulous study of the perfect tension of a bongo skin. Months of tuning, tapping, measuring and listening, all to find the exact point where a drumhead stops being leather and starts to sing. Some called it an obsession. Boudewijn called it Tuesday.
+      </p>
+
+      <h3 class="chapter"><span>IV</span>The Road</h3>
+      <p>
+        Diploma in hand, he did what no sensible graduate would do. He packed a bag, two pairs of sticks and a tuning key, and went looking for the source. He crossed the endless plains of Australia, the deserts of Africa and the rainforests of Brazil, and everywhere he went he let the drums do the talking.
+      </p>
+      <p>
+        They always answered. Around fires, in villages and under skies without a single streetlight, he sat down with indigenous musicians whose rhythms are older than any conservatory. Within minutes there was no language barrier left. He came home sunburnt, with a few stories he still refuses to tell and a style that had changed for good: looser, deeper, and impossible to pin down.
       </p>
 
       <blockquote class="pull">He doesn’t play the drums.<br>He makes them talk.</blockquote>
 
-      <h3 class="chapter"><span>II</span>The Lineage</h3>
+      <h3 class="chapter"><span>V</span>Amsterdam</h3>
       <p>
-        His roots run deep, all the way back to the legends of yesteryear: the giants who drove the big bands through smoke-filled ballrooms, the bebop firebrands who turned the drum kit into a voice of its own, the hard-swinging masters who could set a room alight with a single press roll. Boudewijn listened to them all, learned from them all, and absorbed the thunder and the finesse, the showmanship and the restraint.
+        In the end he settled in Amsterdam, the pinnacle of drum culture and a city that seemed to have been waiting for him. Here it all came together: the grit of Enschede, the wisdom of Freddy Golden, the precision of the Conservatory and the pulse of three continents.
       </p>
       <p>
-        Then he did what only the true ones do. He made it his own. You can hear the whole history of the instrument in his hands — and yet it never sounds like the past. It sounds like right now.
-      </p>
-
-      <h3 class="chapter"><span>III</span>The City</h3>
-      <p>
-        Amsterdam has been both his stage and his muse. Late-night jam sessions that ran until the first trams rattled by. Cramped club corners where the kit barely fit and the walls sweated along with the band. Festival stages and canal-side cafés, packed houses and half-empty Tuesday nights — he played every one of them as if it were the only gig that ever mattered.
+        Watch him play and time begins to bend. The ride cymbal shimmers like streetlight on the Amstel. The snare whispers one moment and thunders the next. The bass drum lands exactly where your heart expects it, or, deliciously, a hair’s breadth later. It is a style that stands like a house: foundations of iron-clad time, walls of deep and unhurried swing, and every window thrown wide open to whatever the night might bring.
       </p>
       <p>
-        Generations of musicians have locked into his groove, leaned on it, learned from it. Bandleaders trusted him, young players studied him, audiences simply could not sit still. Ask around this city and almost everyone seems to have a Boudewijn story — and in nearly every one of them, the music is still playing.
+        Today he packs the halls. Sweaty clubs, sold-out theatres, festival stages with the sun going down. People come for a drummer and walk out feeling like they’ve been to church.
       </p>
 
-      <h3 class="chapter"><span>IV</span>The Sound Goes On</h3>
+      <h3 class="chapter"><span>VI</span>The Sound Goes On</h3>
       <p>
         This page is a celebration of an Amsterdam icon whose beats have become part of the city’s heartbeat. A place where friends, fans and fellow musicians can return, again and again, to the sound of a man who turned every drum into a story, every performance into a memory, and every rhythm into something that refuses to fade.
       </p>
@@ -120,6 +183,79 @@
         Here the music plays on — today, tomorrow and for years to come.
         <span>An homage to the man who keeps Amsterdam in time.</span>
       </p>
+    </div>
+
+    <!-- ================= NEDERLANDS ================= -->
+    <div class="tribute__body" data-lang="nl">
+      <p class="lede">
+        Al een halve eeuw is Boudewijn Rooseboom meer dan een drummer. Hij is de hartslag onder de straten van Amsterdam. Van intieme hoekjes tot kolkende podia droeg zijn ritme de energie van de stad: rauw, warm, eigenwijs en onmiskenbaar levend.
+      </p>
+
+      <h3 class="chapter"><span>I</span>Enschede, 1976</h3>
+      <p>
+        Hij werd in 1976 geboren in de ruigste hoek van Enschede, in straten die je in geen enkele toeristenfolder tegenkomt. Junks in het trappenhuis, zwervers langs het spoor, sirenes als slaapliedje. De meeste kinderen leerden daar hun hoofd naar beneden te houden. Boudewijn leerde de maat te houden.
+      </p>
+      <p>
+        Hij trommelde op alles wat geluid maakte. Vuilnisbakken, hekken, de motorkap van een uitgebrande Opel, zijn schoolbank, tot de juf zijn potloden afpakte. Hij ging meer dan eens tegen de vlakte en stond elke keer weer op, een tikje harder. Niemand gaf hem iets cadeau. Hij knokte zich eruit, tel voor tel.
+      </p>
+
+      <h3 class="chapter"><span>II</span>Freddy Golden</h3>
+      <p>
+        Toen kwam de middag die alles veranderde. Freddy Golden, de wereldberoemde drummer, liep langs een mager jochie dat een onmogelijke groove uit een omgekeerd bierkrat ramde. Golden bleef staan. Hij luisterde. Hij vroeg wie hem dat had geleerd. Niemand, zei het jochie. Golden besloot ter plekke dat daar verandering in kwam.
+      </p>
+      <p>
+        Hij plukte de kleine Boudewijn van de straat en nam hem onder zijn hoede. Een eerste echt paar stokken, een sleutel van de oefenruimte en één regel die nog steeds geldt: speel voor het nummer, nooit voor het applaus. In die vroege jaren was Golden er altijd: in het busje, in de studio, naast het podium. Tot de leerling op een avond iets speelde waar de meester hardop om moest lachen.
+      </p>
+
+      <h3 class="chapter"><span>III</span>Het Conservatorium</h3>
+      <p>
+        Met Goldens zegen ging hij naar Amsterdam, naar het Conservatorium: het straatjoch uit Enschede tussen de geleerden. Hij studeerde cum laude af, op een scriptie waar in slagwerkkringen nog altijd over wordt gefluisterd: een minutieus onderzoek naar de perfecte spanning van een bongovel. Maandenlang stemmen, tikken, meten en luisteren, op zoek naar het precieze punt waarop een vel ophoudt leer te zijn en begint te zingen. Sommigen noemden het een obsessie. Boudewijn noemde het dinsdag.
+      </p>
+
+      <h3 class="chapter"><span>IV</span>De Reis</h3>
+      <p>
+        Met het diploma op zak deed hij wat geen verstandige afgestudeerde zou doen. Hij pakte een tas, twee paar stokken en een stemsleutel en ging op zoek naar de bron. Hij trok over de eindeloze vlaktes van Australië, door de woestijnen van Afrika en de oerwouden van Brazilië, en overal liet hij de trommels het woord doen.
+      </p>
+      <p>
+        Ze gaven altijd antwoord. Rond vuren, in dorpen en onder hemels zonder één lantaarnpaal ging hij zitten met inheemse muzikanten wiens ritmes ouder zijn dan welk conservatorium ook. Binnen een paar minuten was er geen taalbarrière meer. Hij kwam thuis met een verbrande neus, een paar verhalen die hij nog steeds weigert te vertellen en een stijl die voorgoed veranderd was: losser, dieper en niet in een hokje te vangen.
+      </p>
+
+      <blockquote class="pull">Hij speelt geen drums.<br>Hij laat ze praten.</blockquote>
+
+      <h3 class="chapter"><span>V</span>Amsterdam</h3>
+      <p>
+        Uiteindelijk streek hij neer in Amsterdam, het epicentrum van de drumcultuur en een stad die op hem leek te hebben gewacht. Hier kwam alles samen: de rauwheid van Enschede, de wijsheid van Freddy Golden, de precisie van het Conservatorium en de pols van drie continenten.
+      </p>
+      <p>
+        Kijk hem spelen en de tijd begint te buigen. De ride glinstert als straatlicht op de Amstel. De snare fluistert het ene moment en dondert het volgende. De bassdrum valt precies waar je hart hem verwacht, of, heerlijk, een haarbreed later. Het is een stijl die staat als een huis: een fundering van ijzersterke timing, muren van diepe, ontspannen swing en alle ramen wijd open voor wat de avond ook brengt.
+      </p>
+      <p>
+        Vandaag speelt hij zalen plat. Zweterige clubs, uitverkochte theaters, festivalpodia bij ondergaande zon. Mensen komen voor een drummer en gaan naar huis alsof ze in de kerk zijn geweest.
+      </p>
+
+      <h3 class="chapter"><span>VI</span>De Muziek Speelt Door</h3>
+      <p>
+        Deze pagina is een eerbetoon aan een Amsterdams icoon wiens beats deel zijn geworden van de hartslag van de stad. Een plek waar vrienden, fans en collega-muzikanten steeds weer naar terug kunnen keren, naar het geluid van een man die van elke trommel een verhaal maakte, van elk optreden een herinnering, en van elk ritme iets dat weigert te vervagen.
+      </p>
+
+      <p class="coda">
+        Hier speelt de muziek door: vandaag, morgen en nog vele jaren.
+        <span>Een ode aan de man die Amsterdam in de maat houdt.</span>
+      </p>
+    </div>
+
+    <!-- share: shared by both languages -->
+    <div class="share" id="share">
+      <p class="share__label"><span data-lang="en">Pass on the groove</span><span data-lang="nl">Geef de groove door</span></p>
+      <div class="share__links">
+        <button type="button" class="share__native" id="shareNative" hidden><span data-lang="en">Share</span><span data-lang="nl">Delen</span></button>
+        <a data-net="whatsapp" target="_blank" rel="noopener">WhatsApp</a>
+        <a data-net="facebook" target="_blank" rel="noopener">Facebook</a>
+        <a data-net="x" target="_blank" rel="noopener">X</a>
+        <a data-net="linkedin" target="_blank" rel="noopener">LinkedIn</a>
+        <a data-net="email">E-mail</a>
+        <button type="button" id="shareCopy"><span data-lang="en">Copy link</span><span data-lang="nl">Kopieer link</span></button>
+      </div>
     </div>
 
     <footer class="foot">

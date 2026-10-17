@@ -143,8 +143,7 @@
     const next = frames[1 - activeFrame];
     const prev = frames[activeFrame];
     const s = CFG.photoSeconds;
-    const jump = !first && Math.random() < 0.5;          // film-gate jump or slow dissolve
-    const fadeMs = first ? 2400 : jump ? 700 : 2000;
+    const fadeMs = first ? 2400 : 2200;                  // always a calm crossfade
 
     next.style.backgroundImage = `url("${photos[i]}")`;
     next.dataset.ratio = img.naturalWidth / img.naturalHeight;
@@ -157,7 +156,6 @@
     next.classList.remove("drift"); void next.offsetWidth; next.classList.add("drift");
     next.classList.add("is-on");
     prev.classList.remove("is-on");
-    if (jump) { film.classList.remove("jump"); void film.offsetWidth; film.classList.add("jump"); }
 
     activeFrame = 1 - activeFrame;
     showing = i;
@@ -473,6 +471,103 @@
   requestAnimationFrame(loop);
 
   /* ---------------------------------------------------------
+     LANGUAGE (NL | EN)
+     --------------------------------------------------------- */
+  const lang = () => document.documentElement.lang === "nl" ? "nl" : "en";
+  function setLang(l) {
+    document.documentElement.lang = l;
+    store.set("br:lang", l);
+    document.dispatchEvent(new Event("langchange"));
+  }
+  document.querySelectorAll("[data-set-lang]").forEach((b) => {
+    b.addEventListener("click", () => setLang(b.dataset.setLang));
+  });
+
+  /* ---------------------------------------------------------
+     PRESS QUOTES — one at a time, from config.js
+     --------------------------------------------------------- */
+  (function press() {
+    const list = (CFG.quotes || []).filter((q) => q && (q.text || q.nl || q.en) && q.source);
+    if (!list.length) return;
+    const section = $("#press"), stage = section.querySelector(".press__stage");
+    const quoteEl = $("#pressQuote"), sourceEl = $("#pressSource"), dots = $("#pressDots");
+    const seconds = Math.max(4, CFG.quoteSeconds || 7);
+    let i = 0, t = null;
+
+    const textFor = (q) => (lang() === "en" ? q.en || q.text || q.nl : q.nl || q.text || q.en);
+    function show(n, instant) {
+      i = (n + list.length) % list.length;
+      const paint = () => {
+        quoteEl.textContent = textFor(list[i]);
+        sourceEl.textContent = list[i].source;
+        [...dots.children].forEach((d, k) => d.classList.toggle("is-on", k === i));
+        stage.classList.remove("is-out");
+      };
+      if (instant) return paint();
+      stage.classList.add("is-out");
+      setTimeout(paint, 1100);
+    }
+    function loop() { clearTimeout(t); if (list.length > 1) t = setTimeout(() => { show(i + 1); loop(); }, seconds * 1000); }
+
+    if (list.length > 1) list.forEach((_, k) => {
+      const d = document.createElement("button");
+      d.type = "button"; d.setAttribute("aria-label", "Quote " + (k + 1));
+      d.addEventListener("click", () => { show(k); loop(); });
+      dots.appendChild(d);
+    });
+    section.hidden = false;
+    show(0, true);
+    loop();
+    document.addEventListener("langchange", () => show(i, true));
+  })();
+
+  /* ---------------------------------------------------------
+     SHARE
+     --------------------------------------------------------- */
+  (function share() {
+    const url = location.href.split("#")[0];
+    const title = "Boudewijn";
+    const text = () => document.documentElement.lang === "nl"
+      ? "Boudewijn: Een halve eeuw ritme. Een leven lang groove."
+      : "Boudewijn: Half a Century of Rhythm. A Lifetime of Groove.";
+    const e = encodeURIComponent;
+    const setLinks = () => {
+      const t = text();
+      const links = {
+        whatsapp: `https://wa.me/?text=${e(t + " " + url)}`,
+        facebook: `https://www.facebook.com/sharer/sharer.php?u=${e(url)}`,
+        x: `https://twitter.com/intent/tweet?text=${e(t)}&url=${e(url)}`,
+        linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${e(url)}`,
+        email: `mailto:?subject=${e(title)}&body=${e(t + "\n\n" + url)}`
+      };
+      document.querySelectorAll(".share [data-net]").forEach((a) => { a.href = links[a.dataset.net]; });
+    };
+    setLinks();
+    document.addEventListener("langchange", setLinks);
+
+    const native = $("#shareNative");
+    if (navigator.share && matchMedia("(pointer: coarse)").matches) {
+      native.hidden = false;
+      native.addEventListener("click", () => navigator.share({ title, text: text(), url }).catch(() => {}));
+    }
+
+    const copy = $("#shareCopy");
+    copy.addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText(url); }
+      catch (err) {
+        const t = document.createElement("textarea");
+        t.value = url; document.body.appendChild(t); t.select();
+        try { document.execCommand("copy"); } catch (e2) {}
+        t.remove();
+      }
+      const before = copy.innerHTML;
+      copy.textContent = document.documentElement.lang === "nl" ? "Link gekopieerd" : "Link copied";
+      copy.classList.add("is-done");
+      setTimeout(() => { copy.innerHTML = before; copy.classList.remove("is-done"); }, 2200);
+    });
+  })();
+
+  /* ---------------------------------------------------------
      5. ENTER GATE + START
      --------------------------------------------------------- */
   const gate = $("#gate");
@@ -486,7 +581,7 @@
     if (tracks.length) setTrack(pos, true);
   });
 
-  const revealEls = document.querySelectorAll(".label, .tribute__body p, .chapter, .pull, .foot");
+  const revealEls = document.querySelectorAll(".label, .tribute__body p, .chapter, .pull, .share, .foot");
   revealEls.forEach((el) => el.classList.add("reveal"));
   if ("IntersectionObserver" in window) {
     const io = new IntersectionObserver((entries) => entries.forEach((en) => {

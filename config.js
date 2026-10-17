@@ -15,6 +15,17 @@ window.SITE_CONFIG = {
   // 0 = fully black & white, 1 = original colours. 0.3 = a hint of vintage colour.
   photoColour: 0.3,
 
+  // Press quotes: shown one at a time under the photo.
+  // The section stays hidden as long as this list is empty.
+  // Use only real quotes, with the exact wording and the real source.
+  //   text:   the quote as it was published
+  //   en/nl:  (optional) a translation for the other language
+  //   source: where it appeared, e.g. "Het Parool" or "Het Parool, 2024"
+  quotes: [
+    // { text: "Paste the real quote here.", en: "Optional English translation.", source: "Het Parool" },
+  ],
+  quoteSeconds: 7,     // seconds per quote
+
   // Music
   shuffleOnStart: true,
   startVolume: 0.8,    // 0 – 1
